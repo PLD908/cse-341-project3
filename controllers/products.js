@@ -1,18 +1,18 @@
 const Product = require("../models/productModel");
 
 // GET all products
-exports.getProducts = async (req, res) => {
+const getProducts = async (req, res) => {
     //#swagger.tags=['Products']
-   try {
-       const products = await Product.find();
-       res.json(products);
-   } catch (error) {
-       res.status(500).json({ error: error.message });
-   }
+    try {
+        const products = await Product.find().populate("category");
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 // GET a single product by ID
-exports.getProductById = async (req, res) => {
+const getProductById = async (req, res) => {
     //#swagger.tags=['Products']
    try {
        const product = await Product.findById(req.params.id);
@@ -24,7 +24,7 @@ exports.getProductById = async (req, res) => {
 };
 
 // POST create a new product
-exports.createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
     //#swagger.tags=['Products']
    try {
        const newProduct = new Product(req.body);
@@ -36,7 +36,7 @@ exports.createProduct = async (req, res) => {
 };
 
 // PUT update an existing product
-exports.updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
     //#swagger.tags=['Products']
    try {
        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +48,7 @@ exports.updateProduct = async (req, res) => {
 };
 
 // DELETE a product
-exports.deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
     //#swagger.tags=['Products']
    try {
        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
@@ -58,3 +58,11 @@ exports.deleteProduct = async (req, res) => {
        res.status(500).json({ error: error.message });
    }
 };
+
+module.exports = {
+    getProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+}
