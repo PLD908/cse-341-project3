@@ -1,6 +1,5 @@
 const express = require("express");
 const connectDB = require("./config/database");
-const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
@@ -8,17 +7,17 @@ const app = express();
 connectDB();  // Connect to MongoDB
 const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+// Middleware
+app.use(express.json()); 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     next();
 });
 
-app.use(express.json());  // Middleware to parse JSON
+// Routes
+app.use("/api/data", require("./routes/index")); // Other app routes
 
-const myRoutes = require("./routes/index");
-app.use("/api/data", myRoutes);
-
+// Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
