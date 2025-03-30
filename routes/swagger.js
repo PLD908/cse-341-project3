@@ -13,7 +13,7 @@ const options = {
     },
     servers: [
       {
-        url: "cse-341-project3-bqsu.onrender.com/api/data", // Change this to your server URL
+        url: "/", // Change this to your server URL
       },
     ],
     components: {
