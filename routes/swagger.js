@@ -13,13 +13,13 @@ const options = {
     },
     servers: [
       {
-        url: "/", // Change this to your server URL
+        url: "/api/data", // Change this to your server URL
       },
     ],
     components: {
       securitySchemes: {
         BearerAuth: {
-          type: "https",
+          type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
         },

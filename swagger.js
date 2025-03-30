@@ -5,12 +5,13 @@ const doc = {
         title: 'Users API',
         description: 'Users API with Authentication.',
     },
-    host: 'cse-341-project3-bqsu.onrender.com/api',
+    host: 'cse-341-project3-bqsu.onrender.com',
+    basePath: '/api',
     schemes: ['https'],
     components: {
         securitySchemes: {
             BearerAuth: {
-                type: "https",
+                type: "http",
                 scheme: "bearer",
                 bearerFormat: "JWT",
             },
