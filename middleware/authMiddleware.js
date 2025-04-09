@@ -1,14 +1,14 @@
-const jwt = require("jsonwebtoken");
+const authMiddleware = (req, res, next) => {
+    const authHeader = req.header("Authorization");
 
-const authenticateJWT = (req, res, next) => {
-    const token = req.header("Authorization");
-
-    if (!token) {
-        return res.status(401).json({ message: "Access Denied. No token provided." });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Access Denied. No token provided or format is incorrect." });
     }
 
+    const token = authHeader.split(" ")[1];
+
     try {
-        const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (err) {
@@ -16,4 +16,4 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
-module.exports = authenticateJWT;
+module.exports = authMiddleware;
