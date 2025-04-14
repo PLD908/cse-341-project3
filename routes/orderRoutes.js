@@ -42,7 +42,7 @@ router.get("/", orderController.getOrders);
  *       404:
  *         description: Order not found
  */
-router.get("/orders/:id", orderController.getOrderById);
+router.get("/:id", orderController.getOrderById);
 
 /**
  * @swagger
