@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/database");
+const orderRoutes = require("./routes/orderRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -17,6 +18,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use("/api/data/orders", orderRoutes);
+
 app.use("/api/data", require("./routes/index")); // Other app routes
 
 // Start Server
