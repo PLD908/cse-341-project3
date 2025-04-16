@@ -19,3 +19,13 @@ passport.use(
         }
     )
 );
+
+// Save user to session
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Get user from session
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
