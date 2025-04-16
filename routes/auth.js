@@ -45,7 +45,6 @@ router.get("/google/callback",
     });
 
     // You can redirect to frontend or send token as JSON
-    res.send(`Token: ${token}`); // customize this
     res.json({message: "Welcome"});
   }
 );
@@ -167,6 +166,7 @@ router.post("/login", async (req, res) => {
  *     responses:
  *       200:
  *         description: Logged out successfully
+ *     security: []  #
  */
 router.get("/logout", (req, res) => {
     req.logout(function(err) {
