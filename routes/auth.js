@@ -5,6 +5,51 @@ const User = require("../models/user");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 require("dotenv").config();
+const passport = require("passport");
+
+
+/**
+ * @swagger
+ * /auth/google:
+ *   get:
+ *     summary: Login with Google OAuth
+ *     description: Redirects the user to Google OAuth login. After successful authentication, redirects to the frontend with a JWT token.
+ *     tags: [User]
+ *     responses:
+ *       302:
+ *         description: Redirect to Google login page
+ */
+
+/**
+ * @swagger
+ * /auth/google/callback:
+ *   get:
+ *     summary: Google OAuth callback
+ *     description: Handles Google OAuth redirect and returns a JWT token to the frontend via URL.
+ *     tags: [User]
+ *     responses:
+ *       302:
+ *         description: Redirects to frontend with JWT token
+ */
+router.get("/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Google OAuth callback
+router.get("/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    // Send JWT token or redirect to frontend with token
+    const token = jwt.sign({ id: req.user._id, email: req.user.email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // You can redirect to frontend or send token as JSON
+    res.send(`Token: ${token}`); // customize this
+    res.json({message: "Welcome"});
+  }
+);
+
 
 /**
  * @swagger
@@ -111,6 +156,27 @@ router.post("/login", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   get:
+ *     summary: Logout
+ *     description: Handles logout
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ */
+router.get("/logout", (req, res) => {
+    req.logout(function(err) {
+        if (err) {
+            return res.status(500).json({ error: "Logout failed" });
+        }
+        res.json({ message: "Logout successful" });
+    });
+});
+
 
 // Protected - Example of a route that requires authentication
 router.get("/profile", authMiddleware, async (req, res) => {

@@ -7,13 +7,13 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Your API",
+      title: "Users API",
       version: "1.0.0",
-      description: "API documentation with JWT authentication",
+      description: "Users API with Authentication using JWT",
     },
     servers: [
       {
-        url: "/api/data", // Change this to your server URL
+        url: "https://cse-341-project3-bqsu.onrender.com/api/data", // full URL
       },
     ],
     components: {
@@ -27,9 +27,12 @@ const options = {
     },
     security: [{ BearerAuth: [] }],
   },
-  apis: ["./routes/*.js"], // Change this to the correct path of your route files
+  apis: ["./routes/*.js"], // Ensure all your route files (auth, index, etc.) are here
 };
 
 const swaggerDocs = swaggerJsdoc(options);
 
-module.exports = router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Swagger UI route
+router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+module.exports = router;
